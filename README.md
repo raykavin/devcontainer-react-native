@@ -4,26 +4,24 @@
 
 Single-container React Native template (Expo or bare React Native CLI) optimized for AI coding agents, interactive setup and persistent caches.
 
-Follows the same model as [devcontainer-go-react](https://github.com/raykavin/devcontainer-go-react): `init.sh` configures everything, `post-create.sh` bootstraps the project, the `Makefile` is the task entry point and `AGENTS.md` guides AI agents.
-
 ## Purpose
 
 Provide one consistent environment where an AI agent (or you) can install, lint, type-check, test and build the Android app from the same shell: no Android Studio, no JDK or SDK setup per machine.
 
 ## What's inside
 
-| Tool                        | Version / source                                                                    |
-| --------------------------- | ----------------------------------------------------------------------------------- |
-| Base image                  | `mcr.microsoft.com/devcontainers/base:2-trixie` (Debian 13)                         |
-| Node.js                     | 24 (or 22 / 26), copied from the official `node` image (no nvm)                     |
-| JDK                         | Temurin 17 (or 21), copied from the official `eclipse-temurin` image                |
+| Tool                        | Version / source                                                                                                                                                                 |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Base image                  | `mcr.microsoft.com/devcontainers/base:2-trixie` (Debian 13)                                                                                                                      |
+| Node.js                     | 24 (or 22 / 26), copied from the official `node` image (no nvm)                                                                                                                  |
+| JDK                         | Temurin 17 (or 21), copied from the official `eclipse-temurin` image                                                                                                             |
 | Android SDK                 | cmdline-tools in the image (`sdkmanager`, `avdmanager` and the new `android` CLI); platform-tools, platform 37, build-tools 37, NDK 27, CMake installed into a persistent volume |
-| Gradle                      | Project wrapper (`android/gradlew`), cache in a persistent volume                   |
-| Expo CLI / React Native CLI | Per project (`npx expo`, `npx react-native`)                                        |
-| EAS CLI                     | `eas-cli` (cloud builds for Android and iOS, local Android builds)                  |
-| @expo/ngrok                 | For `expo start --tunnel` (Expo projects)                                           |
-| npm / pnpm                  | npm by default; pnpm configured with `node-linker=hoisted`                          |
-| Shell                       | fish                                                                                |
+| Gradle                      | Project wrapper (`android/gradlew`), cache in a persistent volume                                                                                                                |
+| Expo CLI / React Native CLI | Per project (`npx expo`, `npx react-native`)                                                                                                                                     |
+| EAS CLI                     | `eas-cli` (cloud builds for Android and iOS, local Android builds)                                                                                                               |
+| @expo/ngrok                 | For `expo start --tunnel` (Expo projects)                                                                                                                                        |
+| npm / pnpm                  | npm by default; pnpm configured with `node-linker=hoisted`                                                                                                                       |
+| Shell                       | fish                                                                                                                                                                             |
 
 ## Project Layout
 
@@ -102,13 +100,13 @@ Copy `.devcontainer/`, `.vscode/`, `Makefile` and `AGENTS.md` into a project tha
 
 ## Running the app on a device
 
-| Scenario                                    | Setup                                                                                                  | Command                              |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| Emulator on the host                        | ADB mode `host`, emulator running on the host                                                         | `make android`                       |
-| Phone on USB                                | ADB mode `host` (any OS), or mode `container` + USB passthrough (Linux)                                | `make android`                       |
-| Phone on Wi-Fi, ADB debugging (Android 11+) | ADB mode `container`: `make adb-pair DEVICE=ip:port`, then `make adb-connect DEVICE=ip:port`           | `make android`                       |
-| Phone with Expo Go, same Wi-Fi              | Dev server host = your LAN IP (`init.sh`), port 8081 allowed in the host firewall                      | `make start`, scan the QR code       |
-| Phone with Expo Go, any network             | Nothing                                                                                                | `make start-tunnel`, scan the QR code |
+| Scenario                                    | Setup                                                                                        | Command                               |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------- |
+| Emulator on the host                        | ADB mode `host`, emulator running on the host                                                | `make android`                        |
+| Phone on USB                                | ADB mode `host` (any OS), or mode `container` + USB passthrough (Linux)                      | `make android`                        |
+| Phone on Wi-Fi, ADB debugging (Android 11+) | ADB mode `container`: `make adb-pair DEVICE=ip:port`, then `make adb-connect DEVICE=ip:port` | `make android`                        |
+| Phone with Expo Go, same Wi-Fi              | Dev server host = your LAN IP (`init.sh`), port 8081 allowed in the host firewall            | `make start`, scan the QR code        |
+| Phone with Expo Go, any network             | Nothing                                                                                      | `make start-tunnel`, scan the QR code |
 
 How the device reaches Metro: port 8081 is published on the host. ADB-connected devices use `localhost:8081`, mapped by `adb reverse` (Expo and the React Native CLI run it automatically; `make adb-reverse` does it by hand, also for the API port). Expo Go over Wi-Fi uses the host's LAN IP, which is why `REACT_NATIVE_PACKAGER_HOSTNAME` must be set to it in that case.
 
@@ -123,14 +121,14 @@ iOS builds need macOS and Xcode, so they cannot run in a Linux container. You ca
 
 ## Builds
 
-|                     | Command                         | Output                                                    |
-| ------------------- | ------------------------------- | --------------------------------------------------------- |
-| Debug APK           | `make apk-debug`                | `mobile/android/app/build/outputs/apk/debug/`             |
-| Release APK         | `make apk`                      | `mobile/android/app/build/outputs/apk/release/`           |
-| Play Store bundle   | `make aab`                      | `mobile/android/app/build/outputs/bundle/release/`        |
-| EAS cloud (Android) | `make eas-build-android`        | Expo dashboard                                            |
-| EAS cloud (iOS)     | `make eas-build-ios`            | Expo dashboard                                            |
-| EAS local (Android) | `make eas-build-local`          | `mobile/`                                                 |
+|                     | Command                  | Output                                             |
+| ------------------- | ------------------------ | -------------------------------------------------- |
+| Debug APK           | `make apk-debug`         | `mobile/android/app/build/outputs/apk/debug/`      |
+| Release APK         | `make apk`               | `mobile/android/app/build/outputs/apk/release/`    |
+| Play Store bundle   | `make aab`               | `mobile/android/app/build/outputs/bundle/release/` |
+| EAS cloud (Android) | `make eas-build-android` | Expo dashboard                                     |
+| EAS cloud (iOS)     | `make eas-build-ios`     | Expo dashboard                                     |
+| EAS local (Android) | `make eas-build-local`   | `mobile/`                                          |
 
 Expo projects generate `android/` on demand (`npx expo prebuild`); the Makefile does it before local builds. Local builds compile native code for every ABI; pass `GRADLE_ARGS=-PreactNativeArchitectures=arm64-v8a` (or `x86_64` for emulators) for a much faster build. `make android` already builds only the ABI of the connected device. The release builds of both templates are signed with the debug keystore until you configure your own signing key. EAS commands need `eas login` once (the session persists in the `expo_state` volume) and `eas build:configure` to create `eas.json`.
 
@@ -165,18 +163,18 @@ make eas-build-local    # EAS build of Android inside the container
 
 `containerEnv` in `.devcontainer/devcontainer.json`:
 
-| Variable                         | Purpose                                                                                     |
-| -------------------------------- | ------------------------------------------------------------------------------------------- |
-| `PROJECT_NAME`                   | npm package / app name used when scaffolding                                                |
-| `APP_FRAMEWORK`                  | `expo` or `bare` (selects the scaffolder and the Makefile commands)                         |
-| `EXPO_TEMPLATE`                  | `create-expo-app` template: `default`, `blank-typescript`, `tabs`, `blank`, `bare-minimum`  |
-| `APP_ID`                         | Android `applicationId` / iOS bundle identifier                                             |
-| `PKG_MANAGER`                    | `npm` or `pnpm`                                                                             |
-| `ANDROID_SDK_PACKAGES`           | `sdkmanager` packages installed on create (Gradle downloads any other version it needs)     |
-| `ADB_SERVER_SOCKET`              | `tcp:host.docker.internal:5037` (host ADB) or `tcp:localhost:5037` (ADB in the container)   |
-| `REACT_NATIVE_PACKAGER_HOSTNAME` | Host announced by the dev server: `localhost` (ADB devices) or the host LAN IP (Expo Go)    |
-| `EXPO_PUBLIC_API_BASE_URL`       | Example public variable inlined into the Expo bundle                                        |
-| `GIT_*`                          | Git identity, remote and initial branch                                                     |
+| Variable                         | Purpose                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| `PROJECT_NAME`                   | npm package / app name used when scaffolding                                               |
+| `APP_FRAMEWORK`                  | `expo` or `bare` (selects the scaffolder and the Makefile commands)                        |
+| `EXPO_TEMPLATE`                  | `create-expo-app` template: `default`, `blank-typescript`, `tabs`, `blank`, `bare-minimum` |
+| `APP_ID`                         | Android `applicationId` / iOS bundle identifier                                            |
+| `PKG_MANAGER`                    | `npm` or `pnpm`                                                                            |
+| `ANDROID_SDK_PACKAGES`           | `sdkmanager` packages installed on create (Gradle downloads any other version it needs)    |
+| `ADB_SERVER_SOCKET`              | `tcp:host.docker.internal:5037` (host ADB) or `tcp:localhost:5037` (ADB in the container)  |
+| `REACT_NATIVE_PACKAGER_HOSTNAME` | Host announced by the dev server: `localhost` (ADB devices) or the host LAN IP (Expo Go)   |
+| `EXPO_PUBLIC_API_BASE_URL`       | Example public variable inlined into the Expo bundle                                       |
+| `GIT_*`                          | Git identity, remote and initial branch                                                    |
 
 ## Persistent Caches
 
