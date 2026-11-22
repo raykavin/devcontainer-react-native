@@ -1,0 +1,89 @@
+{
+    "name": "my-app DevContainer (React Native)",
+    "workspaceFolder": "/workspaces",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "workspace",
+    "remoteUser": "vscode",
+    "containerEnv": {
+        "TZ": "America/Belem",
+        "PROJECT_NAME": "my-app",
+        "APP_FRAMEWORK": "expo",
+        "EXPO_TEMPLATE": "default",
+        "APP_ID": "com.example.myapp",
+        "PKG_MANAGER": "npm",
+        "GIT_CONFIG_DEV_USERNAME": "your_username",
+        "GIT_CONFIG_DEV_EMAIL": "your_email@domain.com",
+        "GIT_REPO_ADDRESS": "github.com/your_username/my-app.git",
+        "GIT_INIT_DEFAULT_BRANCH": "feat/initial-setup",
+        "ANDROID_SDK_PACKAGES": "platform-tools platforms;android-37.0 build-tools;37.0.0 build-tools;36.0.0 ndk;27.1.12297006 cmake;3.22.1",
+        "ADB_SERVER_SOCKET": "tcp:host.docker.internal:5037",
+        "REACT_NATIVE_PACKAGER_HOSTNAME": "localhost",
+        "EXPO_PUBLIC_API_BASE_URL": "http://localhost:8080"
+    },
+    "portsAttributes": {
+        "8081": {
+            "label": "Metro / Expo dev server",
+            "onAutoForward": "ignore"
+        }
+    },
+    "postCreateCommand": "sh ./.devcontainer/post-create.sh",
+    "postStartCommand": "sh ./.devcontainer/post-start.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "msjsdiag.vscode-react-native",
+                "expo.vscode-expo-tools",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "dsznajder.es7-react-js-snippets",
+                "mathiasfrohlich.kotlin",
+                "streetsidesoftware.code-spell-checker",
+                "streetsidesoftware.code-spell-checker-portuguese-brazilian",
+                "redhat.vscode-yaml",
+                "teddyandturtle.fish",
+                "usernamehw.errorlens",
+                "mhutchie.git-graph"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "fish",
+                "editor.formatOnSave": true,
+                "[javascript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[javascriptreact]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[typescriptreact]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[json]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "eslint.workingDirectories": [
+                    "mobile"
+                ],
+                "typescript.tsdk": "mobile/node_modules/typescript/lib",
+                "react-native-tools.projectRoot": "mobile",
+                "files.watcherExclude": {
+                    "**/node_modules/**": true,
+                    "**/android/.gradle/**": true,
+                    "**/android/.cxx/**": true,
+                    "**/android/build/**": true,
+                    "**/android/app/build/**": true,
+                    "**/.expo/**": true
+                },
+                "search.exclude": {
+                    "**/android/build": true,
+                    "**/android/app/build": true,
+                    "**/android/.cxx": true,
+                    "**/.expo": true
+                }
+            }
+        }
+    }
+}

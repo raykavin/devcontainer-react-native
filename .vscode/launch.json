@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Dev Server (Metro / Expo)",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "make start",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Run on Android",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "make android",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            // Requires the React Native Tools extension and a running dev server
+            "name": "Attach to Hermes (React Native Tools)",
+            "type": "reactnativedirect",
+            "request": "attach",
+            "cwd": "${workspaceFolder}/mobile",
+            "port": 8081
+        }
+    ]
+}

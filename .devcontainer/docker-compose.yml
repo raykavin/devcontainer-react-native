@@ -1,0 +1,59 @@
+services:
+  workspace:
+    tty: true
+    container_name: my-app_mobile_dev
+    restart: on-failure
+    working_dir: /workspaces
+    # Android SDK binaries (adb, aapt2, NDK toolchains) are published for
+    # linux/x86_64 only. On Apple Silicon this runs under Rosetta/QEMU.
+    platform: linux/amd64
+    build:
+      context: .
+      target: development
+      args:
+        NODE_VERSION: "24"
+        JAVA_VERSION: "17"
+        TZ: "America/Belem"
+    networks:
+      - devnet
+    # Lets the container reach the host's ADB server (ADB_SERVER_SOCKET) and
+    # services published on the host, also on Linux hosts
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      # Metro bundler / Expo dev server. Published on the host so devices can
+      # reach it through `adb reverse` (host ADB server) or the host's LAN IP.
+      - "8081:8081"
+    volumes:
+      - ./../:/workspaces:rw
+      # Android caches
+      - android_sdk:/opt/android-sdk:rw
+      - gradle_cache:/home/vscode/.gradle:rw
+      - android_user:/home/vscode/.android:rw
+      # JavaScript caches
+      - node_modules:/workspaces/mobile/node_modules:rw
+      - npm_cache:/home/vscode/.npm:rw
+      - pnpm_store:/home/vscode/.local/share/pnpm/store:rw
+      # Expo / EAS login
+      - expo_state:/home/vscode/.expo:rw
+      # Claude Code state
+      - claude_code:/home/vscode/.claude:rw
+      # USB devices straight into the container (Linux hosts only, requires
+      # ADB_SERVER_SOCKET=tcp:localhost:5037 and `privileged: true` below)
+      # - /dev/bus/usb:/dev/bus/usb
+    # privileged: true
+
+networks:
+  devnet:
+    name: devnet
+    driver: bridge
+
+volumes:
+  android_sdk: null
+  gradle_cache: null
+  android_user: null
+  node_modules: null
+  npm_cache: null
+  pnpm_store: null
+  expo_state: null
+  claude_code: null
